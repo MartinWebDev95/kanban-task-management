@@ -6,17 +6,17 @@ function Header() {
   const [active, setActive] = useState(false);
 
   return (
-    <header className="bg-white dark:bg-slate-800 p-4 lg:py-4 lg:px-0">
-      <div className="container mx-auto flex justify-between items-center gap-4 lg:gap-32">
+    <header className="bg-white dark:bg-slate-800 p-4 lg:px-6">
+      <div className="flex justify-between items-center gap-4 lg:gap-32">
         {theme === 'dark'
           ? (
             <picture>
-              <source srcSet="/assets/logo-light.svg" media="(min-width: 1000px)" type="image/svg+xml" />
+              <source srcSet="/assets/logo-light.svg" media="(min-width: 1024px)" type="image/svg+xml" />
               <img src="/assets/logo-mobile.svg" alt="Kanban" />
             </picture>
           ) : (
             <picture>
-              <source srcSet="/assets/logo-dark.svg" media="(min-width: 1000px)" type="image/svg+xml" />
+              <source srcSet="/assets/logo-dark.svg" media="(min-width: 1024px)" type="image/svg+xml" />
               <img src="/assets/logo-mobile.svg" alt="Kanban" />
             </picture>
           )}
@@ -24,7 +24,7 @@ function Header() {
         <div className="flex items-center justify-between flex-1">
           <button
             type="button"
-            className="text-2xl font-semibold text-white flex items-center gap-2 lg:pointer-events-none"
+            className="text-2xl font-semibold dark:text-white text-black flex items-center gap-2 lg:pointer-events-none"
             onClick={() => setActive(!active)}
           >
             <span>
@@ -42,7 +42,7 @@ function Header() {
           <div className="flex items-center gap-4">
             <button
               type="button"
-              className="bg-violet-800 rounded-full text-white font-semibold px-4 py-2 flex items-center gap-2 text-xl lg:text-lg"
+              className="bg-indigo-700 rounded-full text-white font-semibold px-4 py-2 flex items-center gap-2 text-xl lg:text-lg lg:hover:bg-indigo-500 transition-all duration-300 ease-in-out"
             >
               <span>
                 <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg">
