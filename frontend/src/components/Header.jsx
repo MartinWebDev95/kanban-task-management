@@ -1,12 +1,10 @@
-import { useState } from 'react';
 import useThemeContext from '../hooks/useThemeContext';
 
-function Header() {
+function Header({ showSidebar, setShowSidebar }) {
   const { theme } = useThemeContext();
-  const [active, setActive] = useState(false);
 
   return (
-    <header className="bg-white dark:bg-slate-800 p-4 lg:px-6">
+    <header className="bg-white dark:bg-slate-800 p-4 lg:px-6 fixed z-20 w-full">
       <div className="flex justify-between items-center gap-4 lg:gap-32">
         {theme === 'dark'
           ? (
@@ -25,13 +23,13 @@ function Header() {
           <button
             type="button"
             className="text-2xl font-semibold dark:text-white text-black flex items-center gap-2 lg:pointer-events-none"
-            onClick={() => setActive(!active)}
+            onClick={() => setShowSidebar(!showSidebar)}
           >
             <span>
               Platform Launch
             </span>
 
-            {active
+            {showSidebar
               ? (
                 <img src="/assets/icon-chevron-up.svg" alt="Arrow up" className="lg:hidden" />
               ) : (
