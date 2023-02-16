@@ -4,6 +4,12 @@ import ListOfBoards from './ListOfBoards';
 import ToggleTheme from './ToggleTheme';
 
 function Sidebar({ showSidebar, setShowSidebar }) {
+  const boards = [
+    { board: 'Platform Launch' },
+    { board: 'Marketing Plan' },
+    { board: 'Roadmap' },
+  ];
+
   const handleCloseModalSidebar = (e) => {
     if (e.target.ariaLabel === 'sidebar-modal') {
       setShowSidebar(!showSidebar);
@@ -19,10 +25,10 @@ function Sidebar({ showSidebar, setShowSidebar }) {
       <div className="bg-white dark:bg-slate-800 rounded-xl w-4/5 py-4 lg:w-full lg:h-full lg:rounded-none lg:flex lg:flex-col lg:justify-between lg:pt-20">
         <div className="lg:mt-5">
           <h2 className="uppercase text-gray-500 font-semibold ml-6 text-sm tracking-widest">
-            All boards (3)
+            {`All boards (${boards.length})`}
           </h2>
 
-          <ListOfBoards />
+          <ListOfBoards boards={boards} />
         </div>
 
         <div className="w-full mt-4 lg:mt-0">
