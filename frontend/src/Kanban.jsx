@@ -1,18 +1,13 @@
-import { useState } from 'react';
-import Header from './components/Header';
-import Sidebar from './components/Sidebar';
+import { Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import Login from './pages/Login';
 
 function App() {
-  const [showSidebar, setShowSidebar] = useState(false);
-
   return (
-    <>
-      <Header showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
-      <main className="flex pt-16">
-        <Sidebar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
-        <section className="bg-gray-100 dark:bg-slate-900 h-[88vh] flex-1" />
-      </main>
-    </>
+    <Routes>
+      <Route index path="/" element={<Login />} />
+      <Route path="home" element={<Home />} />
+    </Routes>
   );
 }
 
