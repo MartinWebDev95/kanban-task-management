@@ -4,6 +4,7 @@ import { useState } from 'react';
 import HideSidebarButton from './HideSidebarButton';
 import ListOfBoards from './ListOfBoards';
 import ToggleTheme from './ToggleTheme';
+import Logout from './Logout';
 
 const boards = [
   { board: 'Platform Launch' },
@@ -45,6 +46,8 @@ function Sidebar({ showSidebar, setShowSidebar }) {
         </div>
 
         <div className={`w-full mt-4 lg:mt-0 ${hideSidebar && 'lg:overflow-hidden'}`}>
+          <Logout />
+
           <HideSidebarButton hideSidebar={hideSidebar} setHideSidebar={setHideSidebar} />
 
           <ToggleTheme />
