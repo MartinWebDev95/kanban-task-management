@@ -1,4 +1,6 @@
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import {
+  onAuthStateChanged, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup,
+} from 'firebase/auth';
 import {
   createContext, useEffect, useMemo, useState,
 } from 'react';
@@ -25,6 +27,19 @@ function AuthProvider({ children }) {
     });
   }, []);
 
+  const handleLoginWithGoogle = async () => {
+    const googleProvider = new GoogleAuthProvider();
+
+    // Parameter to choose the google account every time you sign in
+    googleProvider.setCustomParameters({
+      prompt: 'select_account',
+    });
+
+    await signInWithPopup(auth, googleProvider);
+
+    navigate('/');
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -48,6 +63,10 @@ function AuthProvider({ children }) {
       if (err.message === 'Firebase: Error (auth/wrong-password).') {
         setError('Wrong password');
       }
+
+      if (err.message === 'Firebase: Error (auth/invalid-email).') {
+        setError('Invalid email');
+      }
     }
   };
 
@@ -65,6 +84,7 @@ function AuthProvider({ children }) {
     loading,
     setLoading,
     handleLogout,
+    handleLoginWithGoogle,
   }), [currentUser, userLogin, error, loading]);
 
   return (

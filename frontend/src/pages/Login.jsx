@@ -3,7 +3,7 @@ import useAuthContext from '../hooks/useAuthContext';
 
 function Login() {
   const {
-    userLogin, setUserLogin, error, handleLogin,
+    userLogin, setUserLogin, error, handleLogin, handleLoginWithGoogle,
   } = useAuthContext();
 
   const handleChange = (e) => {
@@ -33,14 +33,22 @@ function Login() {
           <button type="submit" className="bg-indigo-700 rounded-full p-2 hover:bg-indigo-500 text-white font-semibold transition-all duration-200 ease-in-out">
             Login
           </button>
-
-          {error && (
-            <p className="text-red-500 font-semibold text-center">
-              {error}
-            </p>
-          )}
-
         </form>
+
+        <button
+          type="button"
+          className="bg-indigo-700 rounded-full p-2 hover:bg-indigo-500 text-white font-semibold transition-all duration-200 ease-in-out w-full mt-4 flex items-center justify-center gap-4 lg:w-3/4 lg:mx-auto"
+          onClick={handleLoginWithGoogle}
+        >
+          <img src="/assets/icon-google.svg" alt="Login with Google" className="w-7 h-7" />
+          Login with Google
+        </button>
+
+        {error && (
+          <p className="text-red-500 font-semibold text-center mt-4">
+            {error}
+          </p>
+        )}
 
         <div className="lg:w-4/5 lg:mx-auto mt-4">
           <ToggleTheme />
