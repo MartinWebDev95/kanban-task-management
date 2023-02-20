@@ -9,7 +9,7 @@ function AuthLayout({ children }) {
     return <Spinner />;
   }
 
-  return currentUser ? children : <Navigate to="/" />;
+  return currentUser ? children : <Navigate to="/login" />;
 }
 
 export default AuthLayout;
