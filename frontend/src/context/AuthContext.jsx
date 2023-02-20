@@ -1,4 +1,4 @@
-import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import {
   createContext, useEffect, useMemo, useState,
 } from 'react';
@@ -13,7 +13,7 @@ function AuthProvider({ children }) {
     email: '',
     password: '',
   });
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -25,11 +25,11 @@ function AuthProvider({ children }) {
     });
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      if (error) setError(false);
+      if (error) setError(null);
 
       const { user } = await signInWithEmailAndPassword(
         auth,
@@ -38,13 +38,33 @@ function AuthProvider({ children }) {
       );
 
       setCurrentUser(user);
+      setUserLogin({ email: '', password: '' });
       navigate('/');
-    } catch (error) {
-      setError(true);
+    } catch (err) {
+      if (err.message === 'Firebase: Error (auth/user-not-found).') {
+        setError('User not found');
+      }
+
+      if (err.message === 'Firebase: Error (auth/wrong-password).') {
+        setError('Wrong password');
+      }
     }
   };
+
+  const handleLogout = async () => {
+    await signOut(auth);
+  };
+
   const value = useMemo(() => ({
-    currentUser, setCurrentUser, userLogin, setUserLogin, error, handleSubmit, loading, setLoading,
+    currentUser,
+    setCurrentUser,
+    userLogin,
+    setUserLogin,
+    error,
+    handleLogin,
+    loading,
+    setLoading,
+    handleLogout,
   }), [currentUser, userLogin, error, loading]);
 
   return (

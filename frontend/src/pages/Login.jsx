@@ -3,7 +3,7 @@ import useAuthContext from '../hooks/useAuthContext';
 
 function Login() {
   const {
-    userLogin, setUserLogin, error, handleSubmit,
+    userLogin, setUserLogin, error, handleLogin,
   } = useAuthContext();
 
   const handleChange = (e) => {
@@ -19,7 +19,7 @@ function Login() {
           Login
         </h2>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 lg:w-3/4 lg:mx-auto">
+        <form onSubmit={handleLogin} className="flex flex-col gap-4 lg:w-3/4 lg:mx-auto">
           <label htmlFor="email" className="flex flex-col gap-2">
             <span className="dark:text-white font-semibold text-black text-sm">Email: </span>
             <input type="email" name="email" id="email" value={userLogin.email} className="bg-transparent border-2 rounded-md border-gray-300 dark:border-gray-500 p-2 font-semibold text-sm dark:text-white" onChange={handleChange} />
@@ -36,7 +36,7 @@ function Login() {
 
           {error && (
             <p className="text-red-500 font-semibold text-center">
-              Wrong email or password
+              {error}
             </p>
           )}
 
