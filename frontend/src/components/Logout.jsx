@@ -4,10 +4,14 @@ function Logout() {
   const { currentUser, handleLogout } = useAuthContext();
 
   return (
-    <div className="mb-4 flex lg:flex-col items-center justify-center gap-4 lg:gap-2">
-      <h3 className="text-gray-500 font-semibold text-sm tracking-widest">
+    <div className="mb-4 flex lg:flex-col items-center justify-center gap-4 lg:gap-3">
+      <h3 className="text-gray-500 font-semibold text-sm tracking-widest flex flex-col items-center gap-1">
         <span className="uppercase">Welcome: </span>
-        <span>{currentUser.email}</span>
+        <span>
+          {currentUser.displayName
+            ? currentUser.displayName
+            : currentUser.email}
+        </span>
       </h3>
       <button
         type="button"
