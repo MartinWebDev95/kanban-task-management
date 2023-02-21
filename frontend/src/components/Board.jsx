@@ -1,4 +1,4 @@
-function Board({ board }) {
+function Board({ boardName }) {
   return (
     <li>
       <button
@@ -8,7 +8,7 @@ function Board({ board }) {
         <img src="/assets/icon-board.svg" alt="Board" />
 
         <span>
-          {board}
+          {boardName}
         </span>
       </button>
     </li>

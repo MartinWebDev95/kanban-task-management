@@ -1,19 +1,32 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import HideSidebarButton from './HideSidebarButton';
 import ListOfBoards from './ListOfBoards';
 import ToggleTheme from './ToggleTheme';
 import Logout from './Logout';
-
-const boards = [
-  { board: 'Platform Launch' },
-  { board: 'Marketing Plan' },
-  { board: 'Roadmap' },
-];
+import useAuthContext from '../hooks/useAuthContext';
+import getAllBoards from '../services/getAllBoards';
 
 function Sidebar({ showSidebar, setShowSidebar }) {
   const [hideSidebar, setHideSidebar] = useState(!!localStorage.getItem('hideSidebar'));
+  const [boards, setBoards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { currentUser } = useAuthContext();
+
+  useEffect(() => {
+    getAllBoards({ userId: currentUser.uid })
+      .then((query) => {
+        query.forEach((document) => {
+          if (boards.length > 0) {
+            setBoards([...boards, { uid: document.id, name: document.data().name }]);
+          } else {
+            setBoards([{ uid: document.id, name: document.data().name }]);
+          }
+        });
+        setLoading(false);
+      });
+  }, [currentUser]);
 
   const handleCloseModalSidebar = (e) => {
     if (e.target.ariaLabel === 'sidebar-modal') {
@@ -42,7 +55,7 @@ function Sidebar({ showSidebar, setShowSidebar }) {
             {`All boards (${boards.length})`}
           </h2>
 
-          <ListOfBoards boards={boards} />
+          {!loading && (<ListOfBoards boards={boards} />)}
         </div>
 
         <div className={`w-full mt-4 lg:mt-0 ${hideSidebar && 'lg:overflow-hidden'}`}>
