@@ -1,17 +1,26 @@
 import {
-  onAuthStateChanged, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
+  createUserWithEmailAndPassword,
 } from 'firebase/auth';
+import {
+  doc, getDoc, serverTimestamp, setDoc,
+} from 'firebase/firestore';
 import {
   createContext, useEffect, useMemo, useState,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 
 const authContext = createContext();
 
 function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
-  const [userLogin, setUserLogin] = useState({
+  const [userFormData, setUserFormData] = useState({
+    username: '',
     email: '',
     password: '',
   });
@@ -21,6 +30,7 @@ function AuthProvider({ children }) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Observer that execute every time that someone login or logout
     onAuthStateChanged(auth, (userLogged) => {
       setCurrentUser(userLogged);
       setLoading(false);
@@ -35,9 +45,26 @@ function AuthProvider({ children }) {
       prompt: 'select_account',
     });
 
-    await signInWithPopup(auth, googleProvider);
+    try {
+      const { user } = await signInWithPopup(auth, googleProvider);
 
-    navigate('/');
+      // Get the user by id
+      const userRef = doc(db, 'users', user.uid);
+      const userSnap = await getDoc(userRef);
+
+      // Add a new document in collection "users" if this document doesn't exists yet
+      if (!userSnap.exists()) {
+        await setDoc(doc(db, 'users', user.uid), {
+          username: user.displayName,
+          email: user.email,
+          timeStamp: serverTimestamp(),
+        });
+      }
+
+      navigate('/');
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   const handleLogin = async (e) => {
@@ -46,26 +73,36 @@ function AuthProvider({ children }) {
     try {
       if (error) setError(null);
 
+      const { email, password } = userFormData;
+
       const { user } = await signInWithEmailAndPassword(
         auth,
-        userLogin.email,
-        userLogin.password,
+        email,
+        password,
       );
 
       setCurrentUser(user);
-      setUserLogin({ email: '', password: '' });
+
+      // Clean form inputs
+      setUserFormData({ username: '', email: '', password: '' });
+
+      // Navigate to homepage when the authentication is correct
       navigate('/');
     } catch (err) {
       if (err.message === 'Firebase: Error (auth/user-not-found).') {
         setError('User not found');
       }
 
-      if (err.message === 'Firebase: Error (auth/wrong-password).') {
+      if (err.message === 'Firebase: Error (auth/wrong-password).' || err.message === 'Firebase: Error (auth/internal-error).') {
         setError('Wrong password');
       }
 
       if (err.message === 'Firebase: Error (auth/invalid-email).') {
         setError('Invalid email');
+      }
+
+      if (err.message === 'Firebase: Password should be at least 6 characters (auth/weak-password).') {
+        setError('Password should be at least 6 characters');
       }
     }
   };
@@ -74,18 +111,65 @@ function AuthProvider({ children }) {
     await signOut(auth);
   };
 
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    const { username, email, password } = userFormData;
+
+    try {
+      if (error) setError(null);
+
+      // Register new user with his email and password
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+
+      // Add a new document in collection "users"
+      await setDoc(doc(db, 'users', user.uid), {
+        username,
+        email,
+        timeStamp: serverTimestamp(),
+      });
+
+      // Clean form inputs
+      setUserFormData({ username: '', email: '', password: '' });
+
+      // Navigate to login to sign in with the new account created
+      navigate('/login');
+    } catch (err) {
+      if (err.message === 'Firebase: Error (auth/email-already-in-use).') {
+        setError('Email already in use');
+      }
+
+      if (err.message === 'Firebase: Error (auth/wrong-password).' || err.message === 'Firebase: Error (auth/internal-error).') {
+        setError('Wrong password');
+      }
+
+      if (err.message === 'Firebase: Error (auth/invalid-email).') {
+        setError('Invalid email');
+      }
+
+      if (err.message === 'Firebase: Password should be at least 6 characters (auth/weak-password).') {
+        setError('Password should be at least 6 characters');
+      }
+    }
+  };
+
   const value = useMemo(() => ({
     currentUser,
     setCurrentUser,
-    userLogin,
-    setUserLogin,
+    userFormData,
+    setUserFormData,
     error,
     handleLogin,
     loading,
     setLoading,
     handleLogout,
     handleLoginWithGoogle,
-  }), [currentUser, userLogin, error, loading]);
+    handleRegister,
+  }), [currentUser, userFormData, error, loading]);
 
   return (
     <authContext.Provider value={value}>
