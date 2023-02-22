@@ -6,6 +6,7 @@ import { db } from '../firebase';
 async function getAllBoards({ userId }) {
   const userRef = doc(db, `users/${userId}`);
 
+  // Get all boards that belong to the current user
   const q = query(
     collection(db, 'boards'),
     where('userRef', '==', userRef),
@@ -13,7 +14,13 @@ async function getAllBoards({ userId }) {
 
   const querySnapshot = await getDocs(q);
 
-  return querySnapshot;
+  let boards = [];
+
+  querySnapshot.forEach((document) => {
+    boards = [...boards, { uid: document.id, name: document.data().name }];
+  });
+
+  return boards;
 }
 
 export default getAllBoards;
