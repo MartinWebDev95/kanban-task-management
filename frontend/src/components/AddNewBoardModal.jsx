@@ -51,7 +51,7 @@ function AddNewBoardModal({ openNewBoard, setOpenNewBoard }) {
               id="taskName"
               value={nameBoard}
               placeholder="e.g. Product Launch"
-              className="dark:bg-slate-800 border-2 rounded-md py-2 px-2 border-gray-200 dark:border-gray-500 placeholder:text-sm"
+              className="dark:bg-slate-800 border-2 rounded-md py-2 px-2 border-gray-200 dark:border-gray-500 text-black dark:text-white text-sm"
               onChange={handleChange}
             />
           </label>
