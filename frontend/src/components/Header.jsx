@@ -3,7 +3,7 @@ import useThemeContext from '../hooks/useThemeContext';
 import AddNewTask from './AddNewTask';
 import BoardModal from './BoardModal';
 
-function Header({ showSidebar, setShowSidebar }) {
+function Header({ showSidebar, setShowSidebar, selectedBoard }) {
   const { theme } = useThemeContext();
 
   const [addNewTask, setAddNewTask] = useState(false);
@@ -32,7 +32,7 @@ function Header({ showSidebar, setShowSidebar }) {
             onClick={() => setShowSidebar(!showSidebar)}
           >
             <span>
-              Platform Launch
+              {selectedBoard.name}
             </span>
 
             {showSidebar

@@ -1,14 +1,21 @@
 import Board from './Board';
 
-function ListOfBoards({ boards, setOpenNewBoard }) {
+function ListOfBoards({
+  boards, setOpenNewBoard, selectedBoard, setSelectedBoard,
+}) {
   const handleAddNewBoard = () => {
     setOpenNewBoard(true);
   };
 
   return (
     <ul className="mt-4 pr-4 font-semibold w-full">
-      {boards.map(({ uid, name }) => (
-        <Board key={uid} boardName={name} />
+      {boards.map((board) => (
+        <Board
+          key={board.uid}
+          board={board}
+          selectedBoard={selectedBoard}
+          setSelectedBoard={setSelectedBoard}
+        />
       ))}
 
       <li>

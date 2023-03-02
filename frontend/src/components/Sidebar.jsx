@@ -8,7 +8,7 @@ import Logout from './Logout';
 import AddNewBoardModal from './AddNewBoardModal';
 
 function Sidebar({
-  showSidebar, setShowSidebar, boards,
+  showSidebar, setShowSidebar, selectedBoard, setSelectedBoard, boards,
 }) {
   const [hideSidebar, setHideSidebar] = useState(!!localStorage.getItem('hideSidebar'));
   const [openNewBoard, setOpenNewBoard] = useState(false);
@@ -41,7 +41,12 @@ function Sidebar({
               {`All boards (${boards.length})`}
             </h2>
 
-            <ListOfBoards boards={boards} setOpenNewBoard={setOpenNewBoard} />
+            <ListOfBoards
+              boards={boards}
+              setOpenNewBoard={setOpenNewBoard}
+              selectedBoard={selectedBoard}
+              setSelectedBoard={setSelectedBoard}
+            />
           </div>
 
           <div className={`w-full mt-4 lg:mt-0 ${hideSidebar && 'lg:overflow-hidden'}`}>
