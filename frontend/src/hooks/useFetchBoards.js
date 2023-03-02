@@ -7,6 +7,7 @@ import useAuthContext from './useAuthContext';
 
 function useFetchBoards() {
   const [boards, setBoards] = useState([]);
+  const [selectedBoard, setSelectedBoard] = useState('');
   const [loading, setLoading] = useState(true);
   const { currentUser } = useAuthContext();
 
@@ -29,6 +30,7 @@ function useFetchBoards() {
       });
 
       setBoards(collectionBoards);
+      setSelectedBoard(collectionBoards[0]);
       setLoading(false);
     });
 
@@ -37,7 +39,9 @@ function useFetchBoards() {
     };
   }, []);
 
-  return { boards, loading };
+  return {
+    boards, loading, selectedBoard, setSelectedBoard,
+  };
 }
 
 export default useFetchBoards;
