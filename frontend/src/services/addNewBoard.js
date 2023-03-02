@@ -1,4 +1,6 @@
-import { doc, addDoc, collection } from 'firebase/firestore';
+import {
+  doc, addDoc, collection, serverTimestamp,
+} from 'firebase/firestore';
 import { db } from '../firebase';
 
 async function addNewBoard({ userId, nameBoard }) {
@@ -8,6 +10,7 @@ async function addNewBoard({ userId, nameBoard }) {
   // Add a new document in collection "boards"
   await addDoc(collection(db, 'boards'), {
     name: nameBoard,
+    timeStamp: serverTimestamp(),
     userRef,
   });
 }
