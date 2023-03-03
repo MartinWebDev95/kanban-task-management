@@ -9,15 +9,6 @@ function ListOfBoards({
 
   return (
     <ul className="mt-4 pr-4 font-semibold w-full">
-      {boards.map((board) => (
-        <Board
-          key={board.uid}
-          board={board}
-          selectedBoard={selectedBoard}
-          setSelectedBoard={setSelectedBoard}
-        />
-      ))}
-
       <li>
         <button
           type="button"
@@ -33,6 +24,16 @@ function ListOfBoards({
           </span>
         </button>
       </li>
+
+      {boards.map((board) => (
+        <Board
+          key={board.uid}
+          board={board}
+          selectedBoard={selectedBoard}
+          setSelectedBoard={setSelectedBoard}
+        />
+      ))}
+
     </ul>
   );
 }
