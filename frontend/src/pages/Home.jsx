@@ -26,7 +26,7 @@ function Home() {
             setShowSidebar={setShowSidebar}
             selectedBoard={selectedBoard}
           />
-          <main className="flex pt-16">
+          <main className="flex justify-between pt-16">
             <Sidebar
               showSidebar={showSidebar}
               setShowSidebar={setShowSidebar}
@@ -34,7 +34,7 @@ function Home() {
               setSelectedBoard={setSelectedBoard}
               boards={boards}
             />
-            <section className="bg-gray-100 dark:bg-slate-900 h-[88vh] flex-1">
+            <section className="bg-gray-100 dark:bg-slate-900 w-full px-4 pt-8 lg:overflow-y-scroll">
               <ListOfTasks tasks={tasks} loadingTasks={loadingTasks} />
             </section>
           </main>
