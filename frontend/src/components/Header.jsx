@@ -65,7 +65,11 @@ function Header({ showSidebar, setShowSidebar, selectedBoard }) {
               <img src="/assets/icon-vertical-ellipsis.svg" alt="Menu board" className="w-1" />
             </button>
 
-            <BoardModal boardModal={boardModal} setOpenBoardModal={setOpenBoardModal} />
+            <BoardModal
+              boardModal={boardModal}
+              setOpenBoardModal={setOpenBoardModal}
+              selectedBoard={selectedBoard}
+            />
           </div>
         </div>
       </div>
