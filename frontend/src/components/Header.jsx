@@ -6,7 +6,7 @@ import BoardModal from './BoardModal';
 function Header({ showSidebar, setShowSidebar, selectedBoard }) {
   const { theme } = useThemeContext();
 
-  const [addNewTask, setAddNewTask] = useState(false);
+  const [addNewTaskModal, setAddNewTaskModal] = useState(false);
   const [boardModal, setOpenBoardModal] = useState(false);
 
   return (
@@ -48,7 +48,7 @@ function Header({ showSidebar, setShowSidebar, selectedBoard }) {
             <button
               type="button"
               className="bg-indigo-700 rounded-full text-white font-semibold px-4 py-2 flex items-center gap-2 text-xl lg:text-lg lg:hover:bg-indigo-500 transition-all duration-300 ease-in-out"
-              onClick={() => setAddNewTask(!addNewTask)}
+              onClick={() => setAddNewTaskModal(!addNewTaskModal)}
             >
               <span>
                 <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg">
@@ -59,7 +59,11 @@ function Header({ showSidebar, setShowSidebar, selectedBoard }) {
               <span className="hidden lg:block">Add New Task</span>
             </button>
 
-            <AddNewTask addNewTask={addNewTask} setAddNewTask={setAddNewTask} />
+            <AddNewTask
+              addNewTaskModal={addNewTaskModal}
+              setAddNewTaskModal={setAddNewTaskModal}
+              selectedBoard={selectedBoard}
+            />
 
             <button type="button" className="p-1" onClick={() => setOpenBoardModal(!boardModal)}>
               <img src="/assets/icon-vertical-ellipsis.svg" alt="Menu board" className="w-1" />
