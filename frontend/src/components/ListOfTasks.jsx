@@ -7,7 +7,7 @@ function ListOfTasks({ tasks, loadingTasks }) {
       ? (<Spinner />)
       : (
         tasks.length === 0 ? (
-          <p className="grid place-items-center h-full">Create your first task</p>
+          <p className="grid place-items-center h-full dark:text-white text-black font-semibold">Create your first task</p>
         ) : (
           <ul className="flex flex-col gap-4">
             {tasks.map((task) => (
