@@ -1,20 +1,47 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-function AddNewTask({ addNewTask, setAddNewTask }) {
-  const handleSubmit = (e) => {
+
+import { useState } from 'react';
+import addNewTask from '../services/addNewTask';
+
+function AddNewTask({ addNewTaskModal, setAddNewTaskModal, selectedBoard }) {
+  const [formTask, setFormTask] = useState({
+    taskName: '',
+    taskDescription: '',
+  });
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setAddNewTask(false);
+    try {
+      // Add new task to the selected board
+      await addNewTask({
+        boardId: selectedBoard.uid,
+        titleTask: formTask.taskName,
+        descriptionTask: formTask.taskDescription,
+      });
+
+      // Close modal
+      setAddNewTaskModal(false);
+
+      // Reset form inputs
+      setFormTask({
+        taskName: '',
+        taskDescription: '',
+      });
+    } catch (err) {
+      throw new Error(err.message);
+    }
   };
 
   const handleCloseNewTaskModal = (e) => {
     if (e.target.ariaLabel === 'newTask-modal') {
-      setAddNewTask(false);
+      setAddNewTaskModal(false);
     }
   };
 
   return (
-    addNewTask && (
+    addNewTaskModal && (
       <div
         className="grid place-items-center bg-black/50 absolute z-30 top-0 left-0 bottom-0 w-full h-screen py-8"
         aria-label="newTask-modal"
@@ -34,19 +61,23 @@ function AddNewTask({ addNewTask, setAddNewTask }) {
               name="taskName"
               id="taskName"
               placeholder="e.g. Take coffe break"
-              className="dark:bg-slate-800 border-2 rounded-md py-2 px-2 border-gray-200 dark:border-gray-500 placeholder:text-sm"
+              value={formTask.taskName}
+              className="dark:bg-slate-800 border-2 rounded-md py-2 px-2 border-gray-200 dark:border-gray-500 placeholder:text-sm dark:text-white text-black"
+              onChange={(e) => setFormTask({ ...formTask, [e.target.name]: e.target.value })}
             />
           </label>
 
           <label htmlFor="description" className="flex flex-col gap-2">
             <span className="text-gray-500 dark:text-white text-sm font-semibold">Description</span>
             <textarea
-              name="description"
+              name="taskDescription"
               id="description"
               cols="30"
               rows="5"
               placeholder="e.g. It's always good to take a break. This  15 minute break will  recharge the batteries  a little."
-              className="dark:bg-slate-800 border-2 rounded-md py-2 px-2 border-gray-200 dark:border-gray-500 placeholder:text-sm"
+              value={formTask.taskDescription}
+              className="dark:bg-slate-800 border-2 rounded-md py-2 px-2 border-gray-200 dark:border-gray-500 placeholder:text-sm dark:text-white text-black"
+              onChange={(e) => setFormTask({ ...formTask, [e.target.name]: e.target.value })}
             />
           </label>
 
@@ -60,7 +91,7 @@ function AddNewTask({ addNewTask, setAddNewTask }) {
                   name="taskName"
                   id="taskName"
                   placeholder="e.g. Take coffe break"
-                  className="dark:bg-slate-800 border-2 rounded-md py-2 px-2 border-gray-200 dark:border-gray-500 flex-1 placeholder:text-sm"
+                  className="dark:bg-slate-800 border-2 rounded-md py-2 px-2 border-gray-200 dark:border-gray-500 flex-1 placeholder:text-sm dark:text-white text-black"
                 />
                 <button type="button" className="w-fit">
                   <img src="/assets/icon-cross.svg" alt="Delete subtask" />
@@ -72,7 +103,7 @@ function AddNewTask({ addNewTask, setAddNewTask }) {
                   name="taskName"
                   id="taskName"
                   placeholder="e.g. Take coffe break"
-                  className="dark:bg-slate-800 border-2 rounded-md py-2 px-2 border-gray-200 dark:border-gray-500 flex-1 placeholder:text-sm"
+                  className="dark:bg-slate-800 border-2 rounded-md py-2 px-2 border-gray-200 dark:border-gray-500 flex-1 placeholder:text-sm dark:text-white text-black"
                 />
                 <button type="button" className="w-fit">
                   <img src="/assets/icon-cross.svg" alt="Delete subtask" />
