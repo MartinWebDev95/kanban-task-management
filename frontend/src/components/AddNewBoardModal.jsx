@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import useAuthContext from '../hooks/useAuthContext';
 import addNewBoard from '../services/addNewBoard';
+import updateBoard from '../services/updateBoard';
 
 function AddNewBoardModal({
   openBoardModal, setOpenBoardModal, updating, selectedBoard = '',
@@ -17,11 +18,22 @@ function AddNewBoardModal({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      await addNewBoard({ userId: currentUser.uid, nameBoard });
-      setOpenBoardModal(false);
-    } catch (error) {
-      throw new Error(error.message);
+    if (!updating) {
+      // Adding a new board
+      try {
+        await addNewBoard({ userId: currentUser.uid, nameBoard });
+        setOpenBoardModal(false);
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    } else {
+      // Updating the selected board using the id and the new name
+      try {
+        await updateBoard({ boardId: selectedBoard.uid, newBoardName: nameBoard });
+        setOpenBoardModal(false);
+      } catch (error) {
+        throw new Error(error.message);
+      }
     }
   };
 
