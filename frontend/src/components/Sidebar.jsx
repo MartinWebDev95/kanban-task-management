@@ -58,7 +58,11 @@ function Sidebar({
         </div>
       </aside>
 
-      <AddNewBoardModal openNewBoard={openNewBoard} setOpenNewBoard={setOpenNewBoard} />
+      <AddNewBoardModal
+        openBoardModal={openNewBoard}
+        setOpenBoardModal={setOpenNewBoard}
+        updating={false}
+      />
     </>
   );
 }

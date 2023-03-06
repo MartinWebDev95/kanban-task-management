@@ -4,8 +4,10 @@ import { useState } from 'react';
 import useAuthContext from '../hooks/useAuthContext';
 import addNewBoard from '../services/addNewBoard';
 
-function AddNewBoardModal({ openNewBoard, setOpenNewBoard }) {
-  const [nameBoard, setNameBoard] = useState('');
+function AddNewBoardModal({
+  openBoardModal, setOpenBoardModal, updating, selectedBoard = '',
+}) {
+  const [nameBoard, setNameBoard] = useState(selectedBoard.name);
   const { currentUser } = useAuthContext();
 
   const handleChange = (e) => {
@@ -17,7 +19,7 @@ function AddNewBoardModal({ openNewBoard, setOpenNewBoard }) {
 
     try {
       await addNewBoard({ userId: currentUser.uid, nameBoard });
-      setOpenNewBoard(false);
+      setOpenBoardModal(false);
     } catch (error) {
       throw new Error(error.message);
     }
@@ -25,12 +27,12 @@ function AddNewBoardModal({ openNewBoard, setOpenNewBoard }) {
 
   const handleCloseNewBoardModal = (e) => {
     if (e.target.ariaLabel === 'newBoard-modal') {
-      setOpenNewBoard(false);
+      setOpenBoardModal(false);
     }
   };
 
   return (
-    openNewBoard && (
+    openBoardModal && (
       <div
         className="grid place-items-center bg-black/50 absolute z-30 top-0 left-0 bottom-0 w-screen h-screen py-8"
         aria-label="newBoard-modal"
@@ -41,7 +43,9 @@ function AddNewBoardModal({ openNewBoard, setOpenNewBoard }) {
           className="bg-white dark:bg-slate-800 rounded-md w-4/5 h-full px-8 py-8 lg:w-2/5 flex flex-col gap-8 overflow-y-scroll scrollbar-hide"
           onSubmit={handleSubmit}
         >
-          <h2 className="text-black dark:text-white font-semibold text-lg">Add New Board</h2>
+          <h2 className="text-black dark:text-white font-semibold text-lg">
+            {updating ? 'Edit Board' : 'Add New Board'}
+          </h2>
 
           <label htmlFor="taskName" className="flex flex-col gap-2">
             <span className="text-gray-500 dark:text-white text-sm font-semibold">Board Name</span>
@@ -66,7 +70,7 @@ function AddNewBoardModal({ openNewBoard, setOpenNewBoard }) {
           </label>
 
           <button type="submit" className="w-full rounded-full bg-indigo-700 text-white py-2 font-semibold lg:hover:bg-indigo-500 transition-all duration-300 ease-in-out">
-            Create Board
+            {updating ? 'Save Changes' : 'Create Board'}
           </button>
         </form>
       </div>

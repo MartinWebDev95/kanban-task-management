@@ -1,16 +1,16 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-function DeleteBoardModal({ deleteModal, setDeleteModal, setOpenBoardModal }) {
+function DeleteBoardModal({ deleteModal, setDeleteModal, setCloseBoardModal }) {
   const handleCloseDeleteModal = (e) => {
     if (e.target.ariaLabel === 'delete-modal') {
       setDeleteModal(false);
-      setOpenBoardModal(false);
+      setCloseBoardModal(false);
     }
   };
 
   const handleCancel = () => {
     setDeleteModal(false);
-    setOpenBoardModal(false);
+    setCloseBoardModal(false);
   };
 
   return (

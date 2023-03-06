@@ -1,11 +1,14 @@
 import { useState } from 'react';
+import AddNewBoardModal from './AddNewBoardModal';
 import DeleteBoardModal from './DeleteBoardModal';
 
-function BoardModal({ boardModal, setOpenBoardModal }) {
+function BoardModal({ boardModal, setOpenBoardModal, selectedBoard }) {
+  const [updateModal, setUpdateModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
 
   const handleEditBoard = () => {
-    setOpenBoardModal(false);
+    setUpdateModal(true);
+    // setOpenBoardModal(false);
   };
 
   const handleDeleteBoard = () => {
@@ -33,10 +36,17 @@ function BoardModal({ boardModal, setOpenBoardModal }) {
           </button>
         </div>
 
+        <AddNewBoardModal
+          openBoardModal={updateModal}
+          setOpenBoardModal={setUpdateModal}
+          updating
+          selectedBoard={selectedBoard}
+        />
+
         <DeleteBoardModal
           deleteModal={deleteModal}
           setDeleteModal={setDeleteModal}
-          setOpenBoardModal={setOpenBoardModal}
+          setCloseBoardModal={setOpenBoardModal}
         />
       </>
     )
