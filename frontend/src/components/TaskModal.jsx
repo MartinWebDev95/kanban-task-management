@@ -1,7 +1,11 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+import { useState } from 'react';
+import BoardModal from './BoardModal';
 
 function TaskModal({ openTaskModal, setOpenTaskModal, task }) {
+  const [openSettingsTaskModal, setOpenSettingsTaskModal] = useState(false);
+
   const handleCloseTaskModal = (e) => {
     if (e.target.ariaLabel === 'task-modal') {
       setOpenTaskModal(false);
@@ -19,9 +23,21 @@ function TaskModal({ openTaskModal, setOpenTaskModal, task }) {
           <div className="flex justify-between items-center">
             <h2 className="dark:text-white text-black font-semibold text-xl group-hover:text-indigo-700 transition-all duration-150 ease-in-out">{task.title}</h2>
 
-            <button type="button" className="p-1">
+            <button
+              type="button"
+              className="p-1"
+              onClick={() => setOpenSettingsTaskModal(!openSettingsTaskModal)}
+            >
               <img src="/assets/icon-vertical-ellipsis.svg" alt="Menu task" className="w-1" />
+
             </button>
+
+            <BoardModal
+              openSettingsModal={openSettingsTaskModal}
+              setOpenSettingsModal={setOpenSettingsTaskModal}
+              selectedItem={task}
+              isTask
+            />
           </div>
 
           {task.description !== '' && (
@@ -29,7 +45,9 @@ function TaskModal({ openTaskModal, setOpenTaskModal, task }) {
           )}
 
           <label htmlFor="currentStatus" className="flex flex-col gap-2">
-            <span className="text-gray-500 dark:text-white text-sm font-semibold">Current Status</span>
+            <span className="text-gray-500 dark:text-white text-sm font-semibold">
+              Current Status
+            </span>
             <select name="currentStatus" id="currentStatus" className="dark:text-white dark:bg-slate-800 border-2 rounded-md py-2 px-2 border-gray-200 dark:border-gray-500 placeholder:text-sm text-sm">
               <option value="todo">Todo</option>
               <option value="doing">Doing</option>
