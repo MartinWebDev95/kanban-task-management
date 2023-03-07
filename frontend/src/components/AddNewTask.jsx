@@ -3,45 +3,70 @@
 
 import { useState } from 'react';
 import addNewTask from '../services/addNewTask';
+import updateTask from '../services/updateTask';
 
-function AddNewTask({ addNewTaskModal, setAddNewTaskModal, selectedBoard }) {
+function AddNewTask({
+  openTaskModal, setOpenTaskModal, updating = false, selectedTask = '', selectedBoard = '',
+}) {
   const [formTask, setFormTask] = useState({
-    taskName: '',
-    taskDescription: '',
+    taskName: `${selectedTask.title ? selectedTask.title : ''}`,
+    taskDescription: `${selectedTask.description ? selectedTask.description : ''}`,
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      // Add new task to the selected board
-      await addNewTask({
-        boardId: selectedBoard.uid,
-        titleTask: formTask.taskName,
-        descriptionTask: formTask.taskDescription,
-      });
+    if (updating) {
+      try {
+        // Updating the selected task using the id
+        await updateTask({
+          taskId: selectedTask.uid,
+          newTaskName: formTask.taskName,
+          newTaskDescription: formTask.taskDescription,
+        });
 
-      // Close modal
-      setAddNewTaskModal(false);
+        // Close modal
+        setOpenTaskModal(false);
 
-      // Reset form inputs
-      setFormTask({
-        taskName: '',
-        taskDescription: '',
-      });
-    } catch (err) {
-      throw new Error(err.message);
+        // Reset form inputs
+        setFormTask({
+          taskName: '',
+          taskDescription: '',
+        });
+      } catch (err) {
+        throw new Error(err.message);
+      }
+    } else {
+      try {
+        // Add new task to the selected board
+        await addNewTask({
+          boardId: selectedBoard.uid,
+          titleTask: formTask.taskName,
+          descriptionTask: formTask.taskDescription,
+        });
+
+        // Close modal
+        setOpenTaskModal(false);
+
+        // Reset form inputs
+        setFormTask({
+          taskName: '',
+          taskDescription: '',
+        });
+      } catch (err) {
+        throw new Error(err.message);
+      }
     }
   };
 
   const handleCloseNewTaskModal = (e) => {
     if (e.target.ariaLabel === 'newTask-modal') {
-      setAddNewTaskModal(false);
+      setOpenTaskModal(false);
     }
   };
 
   return (
-    addNewTaskModal && (
+    openTaskModal && (
       <div
         className="grid place-items-center bg-black/50 absolute z-30 top-0 left-0 bottom-0 w-full h-screen py-8"
         aria-label="newTask-modal"
@@ -52,7 +77,9 @@ function AddNewTask({ addNewTaskModal, setAddNewTaskModal, selectedBoard }) {
           className="bg-white dark:bg-slate-800 rounded-md w-4/5 h-full px-8 py-8 lg:w-2/5 flex flex-col gap-8 overflow-y-scroll scrollbar-hide"
           onSubmit={handleSubmit}
         >
-          <h2 className="text-black dark:text-white font-semibold text-lg">Add New Task</h2>
+          <h2 className="text-black dark:text-white font-semibold text-lg">
+            {updating ? 'Edit Task' : 'Add New Task'}
+          </h2>
 
           <label htmlFor="taskName" className="flex flex-col gap-2">
             <span className="text-gray-500 dark:text-white text-sm font-semibold">Task Name</span>
@@ -126,7 +153,7 @@ function AddNewTask({ addNewTaskModal, setAddNewTaskModal, selectedBoard }) {
           </label>
 
           <button type="submit" className="w-full rounded-full bg-indigo-700 text-white py-2 font-semibold lg:hover:bg-indigo-500 transition-all duration-300 ease-in-out">
-            Create Task
+            {updating ? 'Save Changes' : 'Create Task'}
           </button>
         </form>
       </div>
