@@ -18,18 +18,18 @@ function AddNewBoardModal({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!updating) {
-      // Adding a new board
+    if (updating) {
+      // Updating the selected board using the id and the new name
       try {
-        await addNewBoard({ userId: currentUser.uid, nameBoard });
+        await updateBoard({ boardId: selectedBoard.uid, newBoardName: nameBoard });
         setOpenBoardModal(false);
       } catch (error) {
         throw new Error(error.message);
       }
     } else {
-      // Updating the selected board using the id and the new name
+      // Adding a new board
       try {
-        await updateBoard({ boardId: selectedBoard.uid, newBoardName: nameBoard });
+        await addNewBoard({ userId: currentUser.uid, nameBoard });
         setOpenBoardModal(false);
       } catch (error) {
         throw new Error(error.message);
@@ -55,12 +55,12 @@ function AddNewBoardModal({
           className={`bg-white dark:bg-slate-800 rounded-md w-4/5 ${updating ? 'h-fit' : 'h-full'} px-8 py-8 lg:w-2/5 flex flex-col gap-8 overflow-y-scroll scrollbar-hide`}
           onSubmit={handleSubmit}
         >
-          <h2 className="text-black dark:text-white font-semibold text-lg">
+          <h2 className="text-black dark:text-white font-semibold text-lg text-left">
             {updating ? 'Edit Board' : 'Add New Board'}
           </h2>
 
           <label htmlFor="taskName" className="flex flex-col gap-2">
-            <span className="text-gray-500 dark:text-white text-sm font-semibold">Board Name</span>
+            <span className="text-gray-500 dark:text-white text-sm font-semibold text-left">Board Name</span>
             <input
               type="text"
               name="taskName"
@@ -73,7 +73,7 @@ function AddNewBoardModal({
           </label>
 
           <label htmlFor="currentStatus" className="flex flex-col gap-2">
-            <span className="text-gray-500 dark:text-white text-sm font-semibold">Current Status</span>
+            <span className="text-gray-500 dark:text-white text-sm font-semibold text-left">Current Status</span>
             <select name="currentStatus" id="currentStatus" className="dark:text-white dark:bg-slate-800 border-2 rounded-md py-2 px-2 border-gray-200 dark:border-gray-500 placeholder:text-sm text-sm">
               <option value="todo">Todo</option>
               <option value="doing">Doing</option>
