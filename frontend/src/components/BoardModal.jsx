@@ -1,55 +1,79 @@
 import { useState } from 'react';
 import AddNewBoardModal from './AddNewBoardModal';
+import AddNewTask from './AddNewTask';
 import DeleteBoardModal from './DeleteBoardModal';
 
-function BoardModal({ boardModal, setOpenBoardModal, selectedBoard }) {
+function BoardModal({
+  openSettingsModal, setOpenSettingsModal, selectedItem, isTask = false,
+}) {
   const [updateModal, setUpdateModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
 
-  const handleEditBoard = () => {
+  const handleEdit = () => {
     setUpdateModal(true);
-    // setOpenBoardModal(false);
   };
 
-  const handleDeleteBoard = () => {
+  const handleDelete = () => {
     setDeleteModal(true);
   };
 
   return (
-    boardModal && (
-      <>
-        <div className="absolute top-14 right-4 lg:top-16 lg:right-6 bg-white dark:bg-slate-900 flex flex-col items-start gap-4 p-6 shadow-xl shadow-slate-300 dark:shadow-slate-800 rounded-md">
+    <>
+      {openSettingsModal && (
+        <div className={`absolute ${isTask ? 'top-[275px] right-20 lg:top-16 lg:right-6' : 'top-14 right-4 lg:top-16 lg:right-6'} bg-white dark:bg-slate-900 flex flex-col items-start gap-4 p-6 shadow-xl shadow-slate-300 dark:shadow-slate-800 rounded-md`}>
           <button
             type="button"
             className="text-gray-500 text-sm font-semibold"
-            onClick={handleEditBoard}
+            onClick={handleEdit}
           >
-            Edit board
+            {isTask ? 'Edit task' : 'Edit board'}
           </button>
 
           <button
             type="button"
             className="text-red-500 text-sm font-semibold"
-            onClick={handleDeleteBoard}
+            onClick={handleDelete}
           >
-            Delete board
+            {isTask ? 'Delete task' : 'Delete board'}
           </button>
         </div>
+      )}
 
-        <AddNewBoardModal
-          openBoardModal={updateModal}
-          setOpenBoardModal={setUpdateModal}
-          updating
-          selectedBoard={selectedBoard}
-        />
+      {!isTask ? (
+        <>
+          <AddNewBoardModal
+            openBoardModal={updateModal}
+            setOpenBoardModal={setUpdateModal}
+            updating
+            selectedBoard={selectedItem}
+          />
 
-        <DeleteBoardModal
-          deleteModal={deleteModal}
-          setDeleteModal={setDeleteModal}
-          setCloseBoardModal={setOpenBoardModal}
-        />
-      </>
-    )
+          <DeleteBoardModal
+            deleteModal={deleteModal}
+            setDeleteModal={setDeleteModal}
+            setOpenSettingsModal={setOpenSettingsModal}
+            selectedItem={selectedItem}
+          />
+        </>
+      ) : (
+        <>
+          <AddNewTask
+            openTaskModal={updateModal}
+            setOpenTaskModal={setUpdateModal}
+            updating
+            selectedTask={selectedItem}
+          />
+
+          <DeleteBoardModal
+            deleteModal={deleteModal}
+            setDeleteModal={setDeleteModal}
+            setOpenSettingsModal={setOpenSettingsModal}
+            selectedItem={selectedItem}
+          />
+        </>
+      )}
+
+    </>
   );
 }
 
