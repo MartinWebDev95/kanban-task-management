@@ -60,8 +60,8 @@ function Header({ showSidebar, setShowSidebar, selectedBoard }) {
             </button>
 
             <AddNewTask
-              addNewTaskModal={addNewTaskModal}
-              setAddNewTaskModal={setAddNewTaskModal}
+              openTaskModal={addNewTaskModal}
+              setOpenTaskModal={setAddNewTaskModal}
               selectedBoard={selectedBoard}
             />
 
@@ -70,9 +70,9 @@ function Header({ showSidebar, setShowSidebar, selectedBoard }) {
             </button>
 
             <BoardModal
-              boardModal={boardModal}
-              setOpenBoardModal={setOpenBoardModal}
-              selectedBoard={selectedBoard}
+              openSettingsModal={boardModal}
+              setOpenSettingsModal={setOpenBoardModal}
+              selectedItem={selectedBoard}
             />
           </div>
         </div>
