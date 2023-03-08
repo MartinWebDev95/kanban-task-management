@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import TaskModal from './TaskModal';
+import useFetchSubtasks from '../hooks/useFetchSubtasks';
 
 function Task({ task }) {
   const [openTaskModal, setOpenTaskModal] = useState(false);
+  const { subtasks } = useFetchSubtasks({ taskId: task.uid });
 
   const handleClick = () => {
     setOpenTaskModal(true);
@@ -16,7 +18,7 @@ function Task({ task }) {
         onClick={handleClick}
       >
         <h2 className="dark:text-white text-black font-semibold group-hover:text-indigo-700 transition-all duration-150 ease-in-out">{task.title}</h2>
-        <p className="text-gray-500 font-semibold text-sm">0 of 1 subtasks</p>
+        <p className="text-gray-500 font-semibold text-sm">{`0 of ${subtasks.length} subtasks`}</p>
       </button>
 
       <TaskModal openTaskModal={openTaskModal} setOpenTaskModal={setOpenTaskModal} task={task} />
