@@ -6,11 +6,13 @@ async function addNewTask({ boardId, titleTask, descriptionTask }) {
   const boardRef = doc(db, `boards/${boardId}`);
 
   // Add a new document in collection "tasks"
-  await addDoc(collection(db, 'tasks'), {
+  const newTask = await addDoc(collection(db, 'tasks'), {
     title: titleTask,
     description: descriptionTask,
     boardRef,
   });
+
+  return newTask;
 }
 
 export default addNewTask;
