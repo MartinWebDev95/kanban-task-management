@@ -1,13 +1,24 @@
 function ListOfSubtaskInputs({ subtasksInputs, setSubtasksInputs }) {
   const handleAddNewSubtask = () => {
+    const generatedId = crypto.randomUUID();
+
     setSubtasksInputs([
       ...subtasksInputs,
-      { idInput: crypto.randomUUID(), nameInput: `taskName-${crypto.randomUUID()}` },
+      {
+        idInput: generatedId,
+        nameInput: `taskName-${generatedId}`,
+        valueInput: '',
+      },
     ]);
   };
 
   const handleChangeSubtask = (e) => {
+    const newState = subtasksInputs.map((subtask) => (subtask.idInput === e.target.id
+      ? { ...subtask, valueInput: e.target.value }
+      : subtask
+    ));
 
+    setSubtasksInputs(newState);
   };
 
   const handleDeleteSubtask = (id) => {
@@ -19,12 +30,13 @@ function ListOfSubtaskInputs({ subtasksInputs, setSubtasksInputs }) {
       <label htmlFor="taskName" className="flex flex-col gap-2">
         <span className="text-gray-500 dark:text-white text-sm font-semibold">Subtasks</span>
 
-        {subtasksInputs.map((subtask) => (
-          <div className="flex items-center gap-2" key={subtask.idInput}>
+        {subtasksInputs.map(({ idInput, nameInput, valueInput }) => (
+          <div className="flex items-center gap-2" key={idInput}>
             <input
               type="text"
-              name={subtask.nameInput}
-              id={subtask.idInput}
+              name={nameInput}
+              id={idInput}
+              value={valueInput}
               placeholder="e.g. Take coffe break"
               className="dark:bg-slate-800 border-2 rounded-md py-2 px-2 border-gray-200 dark:border-gray-500 flex-1 placeholder:text-sm dark:text-white text-black"
               onChange={handleChangeSubtask}
@@ -32,7 +44,7 @@ function ListOfSubtaskInputs({ subtasksInputs, setSubtasksInputs }) {
             <button
               type="button"
               className="w-fit"
-              onClick={() => handleDeleteSubtask(subtask.idInput)}
+              onClick={() => handleDeleteSubtask(idInput)}
             >
               <img src="/assets/icon-cross.svg" alt="Delete subtask" />
             </button>

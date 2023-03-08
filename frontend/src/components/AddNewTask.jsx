@@ -15,8 +15,8 @@ function AddNewTask({
   });
 
   const [subtasksInputs, setSubtasksInputs] = useState([
-    { idInput: crypto.randomUUID(), nameInput: `taskName-${crypto.randomUUID()}` },
-    { idInput: crypto.randomUUID(), nameInput: `taskName-${crypto.randomUUID()}` },
+    { idInput: crypto.randomUUID(), nameInput: `taskName-${crypto.randomUUID()}`, valueInput: '' },
+    { idInput: crypto.randomUUID(), nameInput: `taskName-${crypto.randomUUID()}`, valueInput: '' },
   ]);
 
   const handleSubmit = async (e) => {
@@ -69,8 +69,16 @@ function AddNewTask({
     if (e.target.ariaLabel === 'newTask-modal') {
       setOpenTaskModal(false);
       setSubtasksInputs([
-        { idInput: crypto.randomUUID(), nameInput: `taskName-${crypto.randomUUID()}` },
-        { idInput: crypto.randomUUID(), nameInput: `taskName-${crypto.randomUUID()}` },
+        {
+          idInput: crypto.randomUUID(),
+          nameInput: `taskName-${crypto.randomUUID()}`,
+          valueInput: '',
+        },
+        {
+          idInput: crypto.randomUUID(),
+          nameInput: `taskName-${crypto.randomUUID()}`,
+          valueInput: '',
+        },
       ]);
     }
   };
