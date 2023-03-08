@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import addNewTask from '../services/addNewTask';
+import addSubtask from '../services/addSubtask';
 import updateTask from '../services/updateTask';
 import ListOfSubtaskInputs from './ListOfSubtaskInputs';
 
@@ -45,10 +46,19 @@ function AddNewTask({
     } else {
       try {
         // Add new task to the selected board
-        await addNewTask({
+        const newTask = await addNewTask({
           boardId: selectedBoard.uid,
           titleTask: formTask.taskName,
           descriptionTask: formTask.taskDescription,
+        });
+
+        // Add subtasks to the new task added
+        subtasksInputs.forEach(async (subtask) => {
+          await addSubtask({
+            taskId: newTask.id,
+            subtaskId: subtask.idInput,
+            subtaskTitle: subtask.valueInput,
+          });
         });
 
         // Close modal
