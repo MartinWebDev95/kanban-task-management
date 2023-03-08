@@ -16,8 +16,18 @@ function AddNewTask({
   });
 
   const [subtasksInputs, setSubtasksInputs] = useState([
-    { idInput: crypto.randomUUID(), nameInput: `taskName-${crypto.randomUUID()}`, valueInput: '' },
-    { idInput: crypto.randomUUID(), nameInput: `taskName-${crypto.randomUUID()}`, valueInput: '' },
+    {
+      idInput: crypto.randomUUID(),
+      nameInput: `taskName-${crypto.randomUUID()}`,
+      done: false,
+      valueInput: '',
+    },
+    {
+      idInput: crypto.randomUUID(),
+      nameInput: `taskName-${crypto.randomUUID()}`,
+      done: false,
+      valueInput: '',
+    },
   ]);
 
   const handleSubmit = async (e) => {
@@ -82,11 +92,13 @@ function AddNewTask({
         {
           idInput: crypto.randomUUID(),
           nameInput: `taskName-${crypto.randomUUID()}`,
+          done: false,
           valueInput: '',
         },
         {
           idInput: crypto.randomUUID(),
           nameInput: `taskName-${crypto.randomUUID()}`,
+          done: false,
           valueInput: '',
         },
       ]);

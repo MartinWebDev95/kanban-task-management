@@ -7,6 +7,7 @@ function ListOfSubtaskInputs({ subtasksInputs, setSubtasksInputs }) {
       {
         idInput: generatedId,
         nameInput: `taskName-${generatedId}`,
+        done: false,
         valueInput: '',
       },
     ]);
