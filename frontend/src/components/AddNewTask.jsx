@@ -50,6 +50,22 @@ function AddNewTask({
           taskName: '',
           taskDescription: '',
         });
+
+        // Reset subtask inputs
+        setSubtasksInputs([
+          {
+            idInput: crypto.randomUUID(),
+            nameInput: `taskName-${crypto.randomUUID()}`,
+            done: false,
+            valueInput: '',
+          },
+          {
+            idInput: crypto.randomUUID(),
+            nameInput: `taskName-${crypto.randomUUID()}`,
+            done: false,
+            valueInput: '',
+          },
+        ]);
       } catch (err) {
         throw new Error(err.message);
       }
@@ -79,6 +95,22 @@ function AddNewTask({
           taskName: '',
           taskDescription: '',
         });
+
+        // Reset subtask inputs
+        setSubtasksInputs([
+          {
+            idInput: crypto.randomUUID(),
+            nameInput: `taskName-${crypto.randomUUID()}`,
+            done: false,
+            valueInput: '',
+          },
+          {
+            idInput: crypto.randomUUID(),
+            nameInput: `taskName-${crypto.randomUUID()}`,
+            done: false,
+            valueInput: '',
+          },
+        ]);
       } catch (err) {
         throw new Error(err.message);
       }
@@ -88,6 +120,8 @@ function AddNewTask({
   const handleCloseNewTaskModal = (e) => {
     if (e.target.ariaLabel === 'newTask-modal') {
       setOpenTaskModal(false);
+
+      // Reset subtask inputs
       setSubtasksInputs([
         {
           idInput: crypto.randomUUID(),
