@@ -1,5 +1,5 @@
 import {
-  collection, query, where, getDocs, doc,
+  collection, query, where, doc, onSnapshot,
 } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { db } from '../firebase';
@@ -7,37 +7,37 @@ import { db } from '../firebase';
 function useFetchSubtasks({ taskId }) {
   const [subtasks, setSubtasks] = useState([{}]);
 
-  const getSubtasks = async () => {
+  useEffect(() => {
     // Get the reference of the selected task
     const taskRef = doc(db, `tasks/${taskId}`);
 
-    // Get all subtask of the selected task
-    const q = query(collection(db, 'subtasks'), where('taskRef', '==', taskRef));
+    // Get all subtasks that belong to the selected task
+    const q = query(
+      collection(db, 'subtasks'),
+      where('taskRef', '==', taskRef),
+    );
 
-    const querySnapshot = await getDocs(q);
+    const unsub = onSnapshot(q, (querySnapshot) => {
+      const collectionSubtasks = [];
 
-    const data = [];
-
-    // Add to data collection all subtasks
-    querySnapshot.forEach((document) => {
-      data.push({
-        idSubtask: document.id,
-        titleSubtask: document.data().title,
-        doneSubtask: document.data().done,
+      // Add to collectionSubtasks all subtasks
+      querySnapshot.forEach((document) => {
+        collectionSubtasks.push(
+          {
+            idSubtask: document.id,
+            titleSubtask: document.data().title,
+            doneSubtask: document.data().done,
+          },
+        );
       });
+
+      setSubtasks(collectionSubtasks);
     });
 
-    return data;
-  };
-
-  useEffect(() => {
-    getSubtasks()
-      .then((data) => {
-        setSubtasks(data);
-      }).catch((err) => {
-        throw new Error(err.message);
-      });
-  }, []);
+    return () => {
+      unsub();
+    };
+  }, [taskId]);
 
   return { subtasks, setSubtasks };
 }

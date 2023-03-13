@@ -18,10 +18,17 @@ function Task({ task }) {
         onClick={handleClick}
       >
         <h2 className="dark:text-white text-black font-semibold group-hover:text-indigo-700 transition-all duration-150 ease-in-out">{task.title}</h2>
-        <p className="text-gray-500 font-semibold text-sm">{`0 of ${subtasks.length} subtasks`}</p>
+        <p className="text-gray-500 font-semibold text-sm">
+          {`${subtasks.filter((subtask) => subtask.doneSubtask).length} of ${subtasks.length} subtasks`}
+        </p>
       </button>
 
-      <TaskModal openTaskModal={openTaskModal} setOpenTaskModal={setOpenTaskModal} task={task} />
+      <TaskModal
+        openTaskModal={openTaskModal}
+        setOpenTaskModal={setOpenTaskModal}
+        task={task}
+        subtasks={subtasks}
+      />
     </>
   );
 }
