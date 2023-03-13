@@ -8,6 +8,7 @@ async function addSubtask({ taskId, subtaskId, subtaskTitle }) {
   // Add a new document in collection "subtasks"
   await setDoc(doc(db, 'subtasks', subtaskId), {
     title: subtaskTitle,
+    done: false,
     taskRef,
   });
 }
