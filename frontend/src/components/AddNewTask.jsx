@@ -22,12 +22,6 @@ function AddNewTask({
       done: false,
       valueInput: '',
     },
-    {
-      idInput: crypto.randomUUID(),
-      nameInput: `taskName-${crypto.randomUUID()}`,
-      done: false,
-      valueInput: '',
-    },
   ]);
 
   const handleSubmit = async (e) => {
@@ -53,12 +47,6 @@ function AddNewTask({
 
         // Reset subtask inputs
         setSubtasksInputs([
-          {
-            idInput: crypto.randomUUID(),
-            nameInput: `taskName-${crypto.randomUUID()}`,
-            done: false,
-            valueInput: '',
-          },
           {
             idInput: crypto.randomUUID(),
             nameInput: `taskName-${crypto.randomUUID()}`,
@@ -104,12 +92,6 @@ function AddNewTask({
             done: false,
             valueInput: '',
           },
-          {
-            idInput: crypto.randomUUID(),
-            nameInput: `taskName-${crypto.randomUUID()}`,
-            done: false,
-            valueInput: '',
-          },
         ]);
       } catch (err) {
         throw new Error(err.message);
@@ -123,12 +105,6 @@ function AddNewTask({
 
       // Reset subtask inputs
       setSubtasksInputs([
-        {
-          idInput: crypto.randomUUID(),
-          nameInput: `taskName-${crypto.randomUUID()}`,
-          done: false,
-          valueInput: '',
-        },
         {
           idInput: crypto.randomUUID(),
           nameInput: `taskName-${crypto.randomUUID()}`,
