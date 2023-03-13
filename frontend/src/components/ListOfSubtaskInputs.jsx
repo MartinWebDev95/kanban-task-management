@@ -1,6 +1,8 @@
 import deleteSubtask from '../services/deleteSubtask';
 
-function ListOfSubtaskInputs({ subtasksInputs, setSubtasksInputs, updating }) {
+function ListOfSubtaskInputs({
+  subtasksInputs, setSubtasksInputs, updating, subtasksModified,
+}) {
   const handleAddNewSubtask = () => {
     const generatedId = crypto.randomUUID();
 
@@ -16,6 +18,11 @@ function ListOfSubtaskInputs({ subtasksInputs, setSubtasksInputs, updating }) {
   };
 
   const handleChangeSubtask = (e) => {
+    // Check if subtask is updating and check if subtask id is already in subtaskModified collection
+    if (updating && !subtasksModified.current.includes(e.target.id)) {
+      subtasksModified.current = [...subtasksModified.current, e.target.id];
+    }
+
     const newState = subtasksInputs.map((subtask) => (subtask.idInput === e.target.id
       ? { ...subtask, valueInput: e.target.value }
       : subtask

@@ -1,10 +1,11 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import getDefaultSubtasks from '../helpers/getDefaultSubtasks';
 import addNewTask from '../services/addNewTask';
 import addSubtask from '../services/addSubtask';
+import updateSubtask from '../services/updateSubtask';
 import updateTask from '../services/updateTask';
 import ListOfSubtaskInputs from './ListOfSubtaskInputs';
 
@@ -18,6 +19,8 @@ function AddNewTask({
 
   const [subtasksInputs, setSubtasksInputs] = useState(getDefaultSubtasks(subtasks));
 
+  const subtasksModified = useRef([]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -29,6 +32,15 @@ function AddNewTask({
           newTaskName: formTask.taskName,
           newTaskDescription: formTask.taskDescription,
         });
+
+        subtasksInputs.forEach(async (subtask) => {
+          if (subtasksModified.current.includes(subtask.idInput)) {
+            await updateSubtask({ subtaskId: subtask.idInput, subtaskTitle: subtask.valueInput });
+          }
+        });
+
+        // Reset subtaskModified to empty array
+        subtasksModified.current = [];
 
         // Close modal
         setOpenTaskModal(false);
@@ -157,6 +169,7 @@ function AddNewTask({
               subtasksInputs={subtasksInputs}
               setSubtasksInputs={setSubtasksInputs}
               updating={updating}
+              subtasksModified={subtasksModified}
             />
           </div>
 
