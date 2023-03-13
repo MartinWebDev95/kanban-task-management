@@ -2,8 +2,11 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from 'react';
 import BoardModal from './BoardModal';
+import ListOfSubtasks from './ListOfSubtasks';
 
-function TaskModal({ openTaskModal, setOpenTaskModal, task }) {
+function TaskModal({
+  openTaskModal, setOpenTaskModal, task, subtasks,
+}) {
   const [openSettingsTaskModal, setOpenSettingsTaskModal] = useState(false);
 
   const handleCloseTaskModal = (e) => {
@@ -43,6 +46,8 @@ function TaskModal({ openTaskModal, setOpenTaskModal, task }) {
           {task.description !== '' && (
             <p className="text-gray-500 font-semibold text-sm">{task.description}</p>
           )}
+
+          <ListOfSubtasks subtasks={subtasks} />
 
           <label htmlFor="currentStatus" className="flex flex-col gap-2">
             <span className="text-gray-500 dark:text-white text-sm font-semibold">
