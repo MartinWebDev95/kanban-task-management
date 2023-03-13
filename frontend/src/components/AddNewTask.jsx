@@ -2,27 +2,21 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
 import { useState } from 'react';
+import getDefaultSubtasks from '../helpers/getDefaultSubtasks';
 import addNewTask from '../services/addNewTask';
 import addSubtask from '../services/addSubtask';
 import updateTask from '../services/updateTask';
 import ListOfSubtaskInputs from './ListOfSubtaskInputs';
 
 function AddNewTask({
-  openTaskModal, setOpenTaskModal, updating = false, selectedTask = '', selectedBoard = '',
+  openTaskModal, setOpenTaskModal, updating = false, selectedTask = '', selectedBoard = '', subtasks = [],
 }) {
   const [formTask, setFormTask] = useState({
     taskName: `${selectedTask.title ? selectedTask.title : ''}`,
     taskDescription: `${selectedTask.description ? selectedTask.description : ''}`,
   });
 
-  const [subtasksInputs, setSubtasksInputs] = useState([
-    {
-      idInput: crypto.randomUUID(),
-      nameInput: `taskName-${crypto.randomUUID()}`,
-      done: false,
-      valueInput: '',
-    },
-  ]);
+  const [subtasksInputs, setSubtasksInputs] = useState(getDefaultSubtasks(subtasks));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
