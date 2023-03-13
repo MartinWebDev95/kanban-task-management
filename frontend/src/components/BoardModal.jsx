@@ -4,7 +4,7 @@ import AddNewTask from './AddNewTask';
 import DeleteBoardModal from './DeleteBoardModal';
 
 function BoardModal({
-  openSettingsModal, setOpenSettingsModal, selectedItem, isTask = false,
+  openSettingsModal, setOpenSettingsModal, selectedItem, isTask = false, subtasks = [],
 }) {
   const [updateModal, setUpdateModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -62,6 +62,7 @@ function BoardModal({
             setOpenTaskModal={setUpdateModal}
             updating
             selectedTask={selectedItem}
+            subtasks={subtasks}
           />
 
           <DeleteBoardModal

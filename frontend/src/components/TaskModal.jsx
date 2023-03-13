@@ -40,6 +40,7 @@ function TaskModal({
               setOpenSettingsModal={setOpenSettingsTaskModal}
               selectedItem={task}
               isTask
+              subtasks={subtasks}
             />
           </div>
 

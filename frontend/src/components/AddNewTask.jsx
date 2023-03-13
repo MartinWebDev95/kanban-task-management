@@ -156,6 +156,7 @@ function AddNewTask({
             <ListOfSubtaskInputs
               subtasksInputs={subtasksInputs}
               setSubtasksInputs={setSubtasksInputs}
+              updating={updating}
             />
           </div>
 

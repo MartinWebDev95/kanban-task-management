@@ -1,4 +1,6 @@
-function ListOfSubtaskInputs({ subtasksInputs, setSubtasksInputs }) {
+import deleteSubtask from '../services/deleteSubtask';
+
+function ListOfSubtaskInputs({ subtasksInputs, setSubtasksInputs, updating }) {
   const handleAddNewSubtask = () => {
     const generatedId = crypto.randomUUID();
 
@@ -22,8 +24,13 @@ function ListOfSubtaskInputs({ subtasksInputs, setSubtasksInputs }) {
     setSubtasksInputs(newState);
   };
 
-  const handleDeleteSubtask = (id) => {
+  const handleDeleteSubtask = async (id) => {
     setSubtasksInputs(subtasksInputs.filter((subtask) => id !== subtask.idInput));
+
+    if (updating) {
+      // Delete subtask from database
+      await deleteSubtask({ subtaskId: id });
+    }
   };
 
   return (
