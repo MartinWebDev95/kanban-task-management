@@ -24,7 +24,7 @@ function ListOfSubtasks({ subtasks }) {
           <li key={item.idSubtask} className="mb-2">
             <label
               htmlFor={`subtask-${item.idSubtask}`}
-              className={`flex items-center gap-4 rounded-lg dark:bg-slate-900 bg-gray-100 p-3 dark:text-white text-black text-sm font-semibold hover:cursor-pointer hover:bg-gray-300 dark:hover:bg-indigo-900 ${item.doneSubtask && 'line-through dark:text-gray-500 text-gray-500'} transition-all duration-100 ease-in-out`}
+              className={`${item.doneSubtask ? 'line-through dark:text-gray-500 text-gray-500' : 'dark:text-white text-black'} flex items-center gap-4 rounded-lg dark:bg-slate-900 bg-gray-100 p-3 text-sm font-semibold hover:cursor-pointer hover:bg-gray-300 dark:hover:bg-indigo-900 transition-all duration-100 ease-in-out`}
             >
               <input
                 type="checkbox"
