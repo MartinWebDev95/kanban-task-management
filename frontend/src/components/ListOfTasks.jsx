@@ -1,18 +1,17 @@
 import Task from './Task';
 
-function ListOfTasks({ tasks }) {
+function ListOfTasks({ tasks, statusId }) {
   return (
-    tasks.length === 0 ? (
-      <p className="grid place-items-center h-full dark:text-white text-black font-semibold">Create your first task</p>
-    ) : (
-      <ul className="flex flex-col gap-4">
-        {tasks.map((task) => (
-          <li key={task.uid}>
-            <Task task={task} />
-          </li>
-        ))}
-      </ul>
-    )
+    <ul className="flex flex-col gap-4 mt-4">
+      {tasks.map((task) => (
+        task.statusRef.id === statusId
+          && (
+            <li key={task.uid}>
+              <Task task={task} />
+            </li>
+          )
+      ))}
+    </ul>
   );
 }
 
