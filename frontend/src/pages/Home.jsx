@@ -4,7 +4,7 @@ import SectionTasks from '../components/SectionTasks';
 import Sidebar from '../components/Sidebar';
 import Spinner from '../components/Spinner';
 import useFetchBoards from '../hooks/useFetchBoards';
-import useFetchTasksByBoards from '../hooks/useFetchTasksByBoard';
+import useFetchTasksStatus from '../hooks/useFetchTasksStatus';
 
 function Home() {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -16,7 +16,7 @@ function Home() {
     setSelectedBoard,
   } = useFetchBoards();
 
-  const { tasks, loadingTasks } = useFetchTasksByBoards(selectedBoard.uid);
+  const { taskStatus, loadingTaskStatus } = useFetchTasksStatus(selectedBoard.uid);
 
   return (
     loading
@@ -37,7 +37,11 @@ function Home() {
               boards={boards}
             />
 
-            <SectionTasks tasks={tasks} loadingTasks={loadingTasks} />
+            <SectionTasks
+              taskStatus={taskStatus}
+              loadingTaskStatus={loadingTaskStatus}
+              selectedBoard={selectedBoard}
+            />
           </main>
         </>
       )
