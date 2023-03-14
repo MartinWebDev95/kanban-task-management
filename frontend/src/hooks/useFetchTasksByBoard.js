@@ -27,6 +27,7 @@ function useFetchTasksByBoards(boardId) {
             uid: document.id,
             title: document.data().title,
             description: document.data().description,
+            statusRef: document.data().statusRef,
           },
         );
       });
