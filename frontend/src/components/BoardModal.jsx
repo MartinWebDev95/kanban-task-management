@@ -70,6 +70,7 @@ function BoardModal({
             setDeleteModal={setDeleteModal}
             setOpenSettingsModal={setOpenSettingsModal}
             selectedItem={selectedItem}
+            isTask
           />
         </>
       )}

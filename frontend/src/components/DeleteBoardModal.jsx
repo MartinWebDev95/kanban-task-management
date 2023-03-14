@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import deleteBoard from '../services/deleteBoard';
+import deleteTask from '../services/deleteTask';
 
 function DeleteBoardModal({
-  deleteModal, setDeleteModal, setOpenSettingsModal, selectedItem,
+  deleteModal, setDeleteModal, setOpenSettingsModal, selectedItem, isTask = false,
 }) {
   const handleCloseDeleteModal = (e) => {
     if (e.target.ariaLabel === 'delete-modal') {
@@ -13,14 +14,22 @@ function DeleteBoardModal({
   };
 
   const handleDelete = async () => {
-    try {
-      await deleteBoard({ boardId: selectedItem.uid });
-
-      setDeleteModal(false);
-      setOpenSettingsModal(false);
-    } catch (err) {
-      throw new Error(err.message);
+    if (isTask) {
+      try {
+        await deleteTask({ taskId: selectedItem.uid });
+      } catch (err) {
+        throw new Error(err.message);
+      }
+    } else {
+      try {
+        await deleteBoard({ boardId: selectedItem.uid });
+      } catch (err) {
+        throw new Error(err.message);
+      }
     }
+
+    setDeleteModal(false);
+    setOpenSettingsModal(false);
   };
 
   const handleCancel = () => {
@@ -36,20 +45,20 @@ function DeleteBoardModal({
         onClick={handleCloseDeleteModal}
       >
         <div className=" w-3/4 lg:w-2/5 bg-white dark:bg-slate-800 py-6 px-8 rounded-lg">
-          {selectedItem.name ? (
-            <>
-              <h2 className="text-red-500 text-xl font-semibold mb-2">Delete this board?</h2>
-
-              <p className="text-gray-500 text-sm">
-                {`Are you sure you want to delete the "${selectedItem.name}" board? This action will remove all columns and tasks and cannot be reversed.`}
-              </p>
-            </>
-          ) : (
+          {isTask ? (
             <>
               <h2 className="text-red-500 text-xl font-semibold mb-2">Delete this task?</h2>
 
               <p className="text-gray-500 text-sm">
                 {`Are you sure you want to delete the "${selectedItem.title}" task and its subtasks? This action cannot be reversed.`}
+              </p>
+            </>
+          ) : (
+            <>
+              <h2 className="text-red-500 text-xl font-semibold mb-2">Delete this board?</h2>
+
+              <p className="text-gray-500 text-sm">
+                {`Are you sure you want to delete the "${selectedItem.name}" board? This action will remove all columns and tasks and cannot be reversed.`}
               </p>
             </>
           )}
